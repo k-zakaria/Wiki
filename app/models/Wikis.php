@@ -5,6 +5,8 @@ class Wikis{
     private $title;
     private $content;
     private $date;
+    private $auteur;
+    private $category;
     
 
 
@@ -41,6 +43,20 @@ class Wikis{
     public function setDate($date) {
         $this->date = $date;
     }
+     public function getAuteur() {
+        return $this->auteur;
+    }
+
+    public function setAuteur($auteur) {
+        $this->auteur = $auteur;
+    }
+    public function getCategory() {
+        return $this->category;
+    }
+
+    public function setCategory($category) {
+        $this->category = $category;
+    }
 
 
     static public function getAllWikis(){
@@ -58,24 +74,25 @@ class Wikis{
     }
     
     static public function getWikiById($id) {
-        $sql = "SELECT * FROM `wikis` WHERE `wikiId` = ?";
-        $stmt = Database::connexion()->getPdo()->prepare($sql);
-        $stmt->execute([$id]);
-        $result = $stmt->fetch(PDO::FETCH_OBJ);
-        var_dump($result);die();
+        $sql = "SELECT * FROM `wikis` WHERE `wikiId` = $id";
+        $stmt = Database::connexion()->getPdo()->query($sql);
+        $result = $stmt->fetchAll(PDO::FETCH_OBJ);
         return $result;
     }
     
 
     public function addWiki() {
-        $sql = "INSERT INTO `wikis` (`title`, `content`, `dateCreate`) VALUES ( ?, ?, ?, 5, 1)";
+        $sql = "INSERT INTO `wikis` (`title`, `content`, `dateCreate`, `userId`, `categoryId`) VALUES ( ?, ?, ?, ?, ?)";
         $stmt = Database::connexion()->getPdo()->prepare($sql);
-        $stmt->execute([ $this->title, $this->content,  $this->date]);
+        $stmt->execute([ $this->title, $this->content,  $this->date, $this->category, $this->auteur]);
         if ($stmt) {
-            return true;
-        }else{
-            return false;
+            $last_id = Database::connexion()->getPdo()->query('SELECT MAX(id) FROM wikis')->fetchcolumn();
+            return $last_id;
         } 
+        else {
+        
+            return false;
+        }
     }
 
     public function deleteWiki($id) {

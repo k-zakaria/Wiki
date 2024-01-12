@@ -3,7 +3,7 @@
 <div class="container m-5">
     <div class="table-responsive">
         <div class="mb-2">
-            <a class="btn btn-outline-dark mt-auto" href="addTag">Add tag</a>
+            <a class="btn btn-outline-primary mt-auto" href="addTag">Add tag</a>
         </div>
         <table class="table table-bordered table-striped text-center">
             <thead class="thead-dark">
@@ -13,53 +13,46 @@
                     <th>Action</th>
                 </tr>
             </thead>
-            <?php foreach ($tag as $tags) : ?>
-                <tbody>
+            <tbody>
+                <?php foreach ($tag as $tags) : ?>
                     <tr>
                         <td><?= $tags->tagId ?></td>
                         <td><?= $tags->name ?></td>
                         <td class="action-buttons">
-                            <!-- Bouton "Update Tag" qui déclenche l'ouverture du modal -->
-                            <button type="button" class="btn btn-outline-dark mt-auto" data-toggle="modal" data-target="#updateTagModal<?= $tags->tagId ?>">
-                                Update tag
+                            <!-- Button trigger modal -->
+                            <button type="button" class="btn btn-outline-primary mt-auto" data-bs-toggle="modal" data-bs-target="#staticBackdrop<?= $tags->tagId ?>">
+                                Update Tag
                             </button>
 
-                            <!-- Modal "Update Tag" pour chaque tag -->
-                            <div class="modal fade" id="updateTagModal<?= $tags->tagId ?>" tabindex="-1" role="dialog" aria-labelledby="updateTagModalTitle" aria-hidden="true">
-                                <div class="modal-dialog" role="document">
+                            <!-- Modal -->
+                            <div class="modal fade" id="staticBackdrop<?= $tags->tagId ?>" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel<?= $tags->tagId ?>" aria-hidden="true">
+                                <div class="modal-dialog">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h5 class="modal-title" id="updateTagModalTitle">Update Tag</h5>
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
+                                            <h5 class="modal-title" id="staticBackdropLabel<?= $tags->tagId ?>">Update Tag</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
-                                            <!-- Formulaire de mise à jour du tag -->
-                                            <form method="post" action="updateTag">
+                                            <form method="post">
                                                 <div class="form-group">
-                                                    <label for="updateTagName">Tag name</label>
+                                                    <label for="updateTagName" class="text-end">Name Tag</label>
                                                     <input class="form-control" type="text" id="updateTagName" name="newTagName" value="<?= $tags->name ?>" required>
                                                     <input type="hidden" name="tagId" value="<?= $tags->tagId ?>">
                                                 </div>
-
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                    <button type="submit" name="submit" value="update" class="btn btn-save">Update</button>
-                                                </div>
-                                            </form>
-                                            <!-- Fin du formulaire -->
                                         </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                            <button type="submit" name="submit" value="updateTag" class="btn btn-save">Update</button>
+                                        </div>
+                                        </form>
                                     </div>
                                 </div>
                             </div>
-
-                            <a class="btn btn-outline-dark mt-auto" href="deleteTag?id=<?= $tags->tagId ?>">Delete tag</a>
+                            <a class="btn btn-outline-danger mt-auto" href="deleteTag?id=<?= $tags->tagId ?>">Delete tag</a>
                         </td>
                     </tr>
-                </tbody>
-            <?php endforeach; ?>
+                <?php endforeach; ?>
+            </tbody>
         </table>
     </div>
 </div>
-

@@ -50,14 +50,15 @@ class Tag{
     public function updateTag($id) {
         $sql = "UPDATE `tags` SET `name` = ? WHERE `tagId` = ?";
         $stmt = Database::connexion()->getPdo()->prepare($sql);
-        $stmt->execute([$this->name, $id]);
+        $success = $stmt->execute([$this->name, $id]);
     
-        if ($stmt) {
+        if ($success && $stmt->rowCount() > 0) {
             return true;
         } else {
             return false;
         }
     }
+    
 
     public function deleteTag($id) {
         $sql = "DELETE FROM `tags` WHERE `tagid` = $id";

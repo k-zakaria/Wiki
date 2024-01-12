@@ -19,8 +19,8 @@
                     <td><?= $wikis->content ?></td>
                     <td><?= $wikis->dateCreate ?></td>
                     <td class="action-buttons">
-                        <button class="btn btn-primary btn-sm">Éditer</button>
-                        <a class="btn btn-outline-danger mt-auto" href="deleteWiki?id=<?php echo $wikis->wikiId ?>">Delete tag</a>
+                        <a class="btn btn-outline-danger mt-auto" href="deleteWiki?id=<?php echo $wikis->wikiId ?>">Delete</a>
+                        <a class="btn btn-outline-danger mt-auto" href="deleteWiki?id=<?php echo $wikis->wikiId ?>">Delete</a>
                     </td>
                 </tr>
             </tbody>

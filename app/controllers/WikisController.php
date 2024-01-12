@@ -1,6 +1,8 @@
 <?php
 require_once '../app/core/Router.php';
 require_once '../app/models/Wikis.php';
+require_once '../app/models/Tag.php';
+require_once '../app/models/Pivo.php';
 class WikisController
 {
     public Router $router;
@@ -29,10 +31,11 @@ class WikisController
         }
     }
 
-    public function getWikiById($id) {
-        $id = $_GET['id'];
-        exit(var_dump($id));
-        $wiki = Wikis::getWikiById($id);
+  
+        
+        public function getWikiById(){
+            $id = $_GET['id'];
+            $wiki = $this->wikis->getWikiById($id);       
         if ($wiki) {
             return $this->router->renderView('contentWiki', ['wiki' => $wiki]);
         } else {
@@ -41,24 +44,32 @@ class WikisController
     }
     
  
-    public function add()
-    {
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            if (!empty($_POST['title']) && !empty($_POST['content']) && !empty($_POST['date'])) {
+    public function addWiki(){ 
+        if($_SERVER['REQUEST_METHOD'] == 'POST'){
+            if(!empty($_POST['title']) && !empty($_POST['content']) && !empty($_POST['tag']) && !empty($_POST['categotie']))
+            {
                 $title = $_POST['title'];
                 $content = $_POST['content'];
-                $date = $_POST['date'];
-
-                $wiki = new Wikis;
-                $wiki->setTitle($title);
-                $wiki->setContent($content);
-                $wiki->setDate($date);
-
-                if ($wiki->addWiki()) {
-                    return $this->router->renderView('homePage');
+                $tags = $_POST['tag'];
+                $categorie = $_POST['categoty'];
+                $auteur = $_SESSION['id'];
+                
+                $this->wikis->setAuteur($auteur);
+                $this->wikis->setTitle($title);
+                $this->wikis->setCategory($categorie);
+                $this->wikis->setDate(date("Y-m-d"));
+                $this->wikis->setContent($content);
+                $id=$this->wikis->addWiki();
+                foreach($tags as $tag){
+                    $tagWiki = new Pivo;
+                    $tagWiki->setTag($tag);
+                    $tagWiki->setWiki($id);
+                    $tagWiki->addwikitag();
                 }
+                header('Location: /');
             }
         }
+
     }
 
     public function update($id) {

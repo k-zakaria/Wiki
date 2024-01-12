@@ -38,24 +38,17 @@ class TagController{
     }
 
     public function updateTag() {
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            $id = $_GET['id'];
-            if (!empty($_POST['name'])) {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['submit'] == 'update')
+            {
+                $id = $_POST['id'];
                 $name = $_POST['name'];
-    
-                $tag = new Tag;
-                $tag->setName($name);
-    
-                if ($tag->updateTag($id)) {
-                    return $this->router->renderView('updateTag');
-                } else {
-                    return false;
-                }
+                $this->tag->setName($name);
+                $this->tag->setId($id);
+                $this->tag->updateTag($id);
+                
+                return $this->router->renderView('tags',["tags"=>$this->tag->getAllTag()]);
             }
-        } else {
-            // $currentTag = Tag::getTagById($id);
-            // return $this->router->renderView('updateForm', ['currentTag' => $currentTag]);
-        }
+        
     }
     public function deleteTag() {
         $id = $_GET['id'];
